@@ -1,0 +1,81 @@
+import { Box, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import { LongPressButton } from "./LongPressButton";
+
+type CounterProps = {
+    count: number;
+    setCount: (num: number) => void;
+    total: number;
+};
+
+const Counter = (props: CounterProps) => {
+    const { count, setCount, total } = props;
+    return (
+        <Box
+            onClick={() => setCount(count + 1)}
+            sx={{
+                cursor: "pointer",
+                padding: 2,
+                border: "2px solid #8ebfbb",
+                borderRadius: 2,
+                margin: 1,
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "white",
+            }}
+        >
+            <Typography>{count}</Typography>
+            <Typography sx={{ fontSize: 12, color: "#53706e" }}>
+                {Math.round(total === 0 ? 0 : (count / total) * 100)}%
+            </Typography>
+        </Box>
+    );
+};
+
+function App() {
+    const [count, setCount] = useState([0, 0, 0, 0]);
+    const totalCount = count.reduce((acc, c) => acc + c, 0);
+    return (
+        <Box sx={{ backgroundColor: "#a4dbd7", height: "100vh" }}>
+            <Typography align="center" sx={{}}>
+                Cell Counter
+            </Typography>
+            <Typography align="center" sx={{}}>
+                Total: {totalCount}
+            </Typography>
+            <Stack
+                direction="row"
+                height={"60vh"}
+                spacing={1}
+                sx={{
+                    padding: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}
+            >
+                {count.map((c, index) => (
+                    <Counter
+                        key={index}
+                        count={c}
+                        setCount={(num) => {
+                            const newCount = [...count];
+                            newCount[index] = num;
+                            setCount(newCount);
+                        }}
+                        total={totalCount}
+                    />
+                ))}
+            </Stack>
+            <Box sx={{ p: 2 }}>
+                <LongPressButton onLongPress={() => setCount([0, 0, 0, 0])}>
+                    Reset
+                </LongPressButton>
+            </Box>
+        </Box>
+    );
+}
+
+export default App;
