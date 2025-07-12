@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Slider, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { LongPressButton } from "./LongPressButton";
 
@@ -6,13 +6,16 @@ type CounterProps = {
     count: number;
     setCount: (num: number) => void;
     total: number;
+    width: number;
 };
 
 const Counter = (props: CounterProps) => {
-    const { count, setCount, total } = props;
+    const { count, setCount, total, width } = props;
     return (
         <Box
-            onClick={() => setCount(count + 1)}
+            onClick={() => {
+                setCount(count + 1);
+            }}
             sx={{
                 cursor: "pointer",
                 padding: 2,
@@ -24,7 +27,7 @@ const Counter = (props: CounterProps) => {
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: "white",
-                width: 60,
+                width: width,
             }}
         >
             <Typography>{count}</Typography>
@@ -37,7 +40,16 @@ const Counter = (props: CounterProps) => {
 
 function App() {
     const [count, setCount] = useState([0, 0, 0, 0]);
+    const [width, setWidth] = useState(
+        JSON.parse(localStorage.getItem("button_width") || "60")
+    );
     const totalCount = count.reduce((acc, c) => acc + c, 0);
+
+    const handleSliderChange = (event: Event, newValue: number) => {
+        setWidth(newValue);
+        localStorage.setItem("button_width", JSON.stringify(newValue));
+    };
+
     return (
         <Box sx={{ backgroundColor: "#a4dbd7", height: "100vh" }}>
             <Typography align="center" sx={{}}>
@@ -66,6 +78,7 @@ function App() {
                             setCount(newCount);
                         }}
                         total={totalCount}
+                        width={width}
                     />
                 ))}
             </Stack>
@@ -74,6 +87,7 @@ function App() {
                     Reset
                 </LongPressButton>
             </Box>
+            <Slider value={width} onChange={handleSliderChange} min={40} />
         </Box>
     );
 }
