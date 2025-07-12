@@ -19,12 +19,12 @@ const Counter = (props: CounterProps) => {
                 border: "2px solid #8ebfbb",
                 borderRadius: 2,
                 margin: 1,
-                flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: "white",
+                width: 60,
             }}
         >
             <Typography>{count}</Typography>
@@ -48,12 +48,12 @@ function App() {
             </Typography>
             <Stack
                 direction="row"
-                height={"60vh"}
+                height={"40vh"}
                 spacing={1}
                 sx={{
                     padding: 2,
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                 }}
             >
                 {count.map((c, index) => (
